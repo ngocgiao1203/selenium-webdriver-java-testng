@@ -4,7 +4,10 @@
       <root url="file://$PROJECT_DIR$/libraries" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libraries/selenium-api-4.25.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/selenium-firefox-driver-4.25.0-sources.jar!/" />
+    </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/libraries" recursive="false" />
   </library>
 </component>
