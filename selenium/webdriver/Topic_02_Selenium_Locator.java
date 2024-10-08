@@ -76,10 +76,51 @@ public class Topic_02_Selenium_Locator {
         driver.findElement(By.cssSelector("input#FirstName"));
         driver.findElement(By.cssSelector("#FirstName"));
 
+        //Css vs Class
+        driver.findElement(By.cssSelector("div[class='page-title']"));
+        driver.findElement(By.cssSelector("div.page-title"));
+        driver.findElement(By.cssSelector(".page-title"));
+
+        //Css vs Name (Name chỉ support khi viết đầy đủ)
+        driver.findElement(By.cssSelector("input[name='FirstName']"));
+
+        //Css vs tagname
+        driver.findElement(By.cssSelector("input"));
+
+        //Css vs link
+        //Css ko work với text -> buộc phải làm việc với Attribute
+        driver.findElement(By.cssSelector("a[href='/customer/addresses']"));
+
+        //Css vs partial link
+        driver.findElement(By.cssSelector("a[href*='addresses']")); //lấy giữa
+        //driver.findElement(By.cssSelector("a[href^='addresses']")); //lấy đầu
+        driver.findElement(By.cssSelector("a[href$='addresses']")); //lấy đuôi
     }
     @Test
     public void TC_08_XPath(){
+        //Xpath ko cho viết tắt như Css
+        //VD:
+            //Css có thể viết ("input#FirstName") / ("#FirstName")
+        //Xpath vs ID
+        driver.findElement(By.xpath("//input[@id='FirstName']"));
 
+        //Xpath vs Class
+        driver.findElement(By.xpath("//div[@class='page-title']"));
+
+        //Xpath vs Name (Name chỉ support khi viết đầy đủ)
+        driver.findElement(By.xpath("//input[@name='FirstName']"));
+
+        //Xpath vs tagname
+        driver.findElement(By.xpath("//input"));
+
+        //Xpath vs link
+        //Xpath ko work với text -> buộc phải làm việc với Attribute
+        driver.findElement(By.xpath("//a[@href='/customer/addresses']"));
+        driver.findElement(By.xpath("//a[text()='Addresses']"));
+
+        //Xpath vs partial link
+        driver.findElement(By.xpath("//a[contains(@href,'addresses')]")); //lấy giữa
+        driver.findElement(By.xpath("//a[contains(text(),'Addresses')]"));
     }
 
 
