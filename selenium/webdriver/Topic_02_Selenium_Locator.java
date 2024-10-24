@@ -72,7 +72,7 @@ public class Topic_02_Selenium_Locator {
     public void TC_07_Css(){
         //css: có thể cover 6 TCs trên (id, class, name....)
         //Css vs ID
-        driver.findElement(By.cssSelector("input[id='FirstName']"));
+        driver.findElement(By.cssSelector("input[id='FirstName']"));//combine tagname & id
         driver.findElement(By.cssSelector("input#FirstName"));
         driver.findElement(By.cssSelector("#FirstName"));
 
@@ -82,7 +82,9 @@ public class Topic_02_Selenium_Locator {
         driver.findElement(By.cssSelector(".page-title"));
 
         //Css vs Name (Name chỉ support khi viết đầy đủ)
-        driver.findElement(By.cssSelector("input[name='FirstName']"));
+        driver.findElement(By.cssSelector("input[name='FirstName']")); //combine tagname & attribute (name)
+        driver.findElement(By.cssSelector("[name='FirstName']")); //using the "name" attribute directly
+
 
         //Css vs tagname
         driver.findElement(By.cssSelector("input"));
@@ -100,7 +102,7 @@ public class Topic_02_Selenium_Locator {
     public void TC_08_XPath(){
         //Xpath ko cho viết tắt như Css
         //VD:
-            //Css có thể viết ("input#FirstName") / ("#FirstName")
+        //Css có thể viết ("input#FirstName") / ("#FirstName")
         //Xpath vs ID
         driver.findElement(By.xpath("//input[@id='FirstName']"));
 
