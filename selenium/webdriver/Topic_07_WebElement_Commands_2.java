@@ -173,7 +173,8 @@ public class Topic_07_WebElement_Commands_2 {
         driver.findElement(By.cssSelector("input#email")).sendKeys("ngocgiaok18ufm@gmail.com");
         //number
         driver.findElement(By.cssSelector("input#new_password")).sendKeys("1234");
-        sleepInSeconds (2);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        //sleepInSeconds (2);
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='lowercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='uppercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='number-char completed']")).isDisplayed());
@@ -185,7 +186,8 @@ public class Topic_07_WebElement_Commands_2 {
         //lower chars
         driver.findElement(By.cssSelector("input#new_password")).clear();
         driver.findElement(By.cssSelector("input#new_password")).sendKeys("auto");
-        sleepInSeconds (5);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        //sleepInSeconds (5);
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='lowercase-char completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='uppercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='number-char not-completed']")).isDisplayed());
@@ -195,7 +197,8 @@ public class Topic_07_WebElement_Commands_2 {
         //upper chars
         driver.findElement(By.cssSelector("input#new_password")).clear();
         driver.findElement(By.cssSelector("input#new_password")).sendKeys("ABC");
-        sleepInSeconds (2);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        //sleepInSeconds (2);
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='lowercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='uppercase-char completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='number-char not-completed']")).isDisplayed());
@@ -205,7 +208,8 @@ public class Topic_07_WebElement_Commands_2 {
         //special chars
         driver.findElement(By.cssSelector("input#new_password")).clear();
         driver.findElement(By.cssSelector("input#new_password")).sendKeys("@#");
-        sleepInSeconds (2);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        //sleepInSeconds (2);
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='lowercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='uppercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='number-char not-completed']")).isDisplayed());
@@ -215,7 +219,8 @@ public class Topic_07_WebElement_Commands_2 {
         //more than 8 chars
         driver.findElement(By.cssSelector("input#new_password")).clear();
         driver.findElement(By.cssSelector("input#new_password")).sendKeys("123423222");
-        sleepInSeconds (2);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        //sleepInSeconds (2);
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='lowercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='uppercase-char not-completed']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("li[class='number-char completed']")).isDisplayed());
