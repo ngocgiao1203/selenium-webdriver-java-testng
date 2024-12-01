@@ -25,6 +25,8 @@ public class Topic_17_Action_I {
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         action = new Actions(driver);
+        //set tọa độ cho con trỏ chuột
+        action.moveByOffset(0,0).perform();
     }
 
     @Test
@@ -52,14 +54,6 @@ public class Topic_17_Action_I {
     @Test
     public void TC_03_Hover_Fahasa(){
         driver.get("https://www.fahasa.com/");
-       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='brz-a']")));
-//
-//        if(driver.findElement(By.xpath("//a[@class='brz-a']")).isDisplayed()){
-//            driver.findElement(By.xpath("//div[@class='brz-popup2__close']")).click();
-//        }
-
         action.moveToElement(driver.findElement(By.xpath("//span[@class='icon_menu']"))).perform();
         sleepInSeconds(2);
         action.moveToElement(driver.findElement(By.xpath("//a[@title='Sách Trong Nước']"))).perform();
@@ -67,8 +61,7 @@ public class Topic_17_Action_I {
 
         action.click(driver.findElement(By.xpath("//div[@class='fhs_column_stretch']//a[text()='Kỹ Năng Sống']"))).perform();
         sleepInSeconds(5);
-        WebElement sachKNS = driver.findElement(By.xpath("//strong[text()='Kỹ năng sống']"));
-        Assert.assertTrue(sachKNS.isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//ol[@class='breadcrumb']//strong[text()='Kỹ năng sống']")).isDisplayed());
     }
     @AfterClass
     public void afterClass() {
