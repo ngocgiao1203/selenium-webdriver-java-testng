@@ -77,15 +77,13 @@ public class Topic_18_Action_II {
         sleepInSeconds(2);
         Assert.assertEquals(allNumberSelected.size(),6);
     }
+
     @Test
-    public void TC_03_DoubleClick(){
-driver.get("https://automationfc.github.io/basic-form/index.html");
-//action.scrollByAmount(0, 2324+1236).perform();
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", driver.findElement((By.xpath("//button[text()='Double click me']"))));
-action.doubleClick(driver.findElement(By.xpath("//button[text()='Double click me']"))).perform();
-
-
-Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
+    public void TC_03_DoubleClick() {
+        driver.get("https://automationfc.github.io/basic-form/index.html");
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView()",driver.findElement((By.xpath("//button[text()='Double click me']"))));
+        action.doubleClick(driver.findElement(By.xpath("//button[text()='Double click me']"))).perform();
+        Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
     }
 
     @AfterClass
