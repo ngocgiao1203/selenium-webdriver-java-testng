@@ -43,14 +43,14 @@ public class Topic_18_Action_II {
         driver.get("https://automationfc.github.io/jquery-selectable/");
         sleepInSeconds(2);
         List<WebElement> allNumber = driver.findElements(By.cssSelector("ol#selectable>li"));
-        Assert.assertEquals(allNumber.size(),20);
+        Assert.assertEquals(allNumber.size(), 20);
         action.clickAndHold(allNumber.get(0)) //Click vào số 1 và giữ chuột
-              .moveToElement(allNumber.get(3)) //Di chuột tới số 4
-              .release()//Nhả chuột trái ra - kết thúc cho s kiện clickAndHold()
-              .perform();//Thực thi các câu lệnh trên (nếu ko có thì ko thực thi)
+                .moveToElement(allNumber.get(3)) //Di chuột tới số 4
+                .release()//Nhả chuột trái ra - kết thúc cho s kiện clickAndHold()
+                .perform();//Thực thi các câu lệnh trên (nếu ko có thì ko thực thi)
         List<WebElement> allNumberSelected = driver.findElements(By.cssSelector("ol#selectable>li.ui-selected"));
         sleepInSeconds(2);
-        Assert.assertEquals(allNumberSelected.size(),4);
+        Assert.assertEquals(allNumberSelected.size(), 4);
     }
 
     @Test
@@ -58,38 +58,62 @@ public class Topic_18_Action_II {
         driver.get("https://automationfc.github.io/jquery-selectable/");
         sleepInSeconds(2);
         List<WebElement> allNumber = driver.findElements(By.cssSelector("ol#selectable>li"));
-        Assert.assertEquals(allNumber.size(),20);
+        Assert.assertEquals(allNumber.size(), 20);
 
         //Nhấn phím Ctrl xuống (chưa nhả ra)
         action.keyDown(keys).perform();
         action.click(allNumber.get(0))
-              .click(allNumber.get(3))
-              .click(allNumber.get(7))
-              .click(allNumber.get(10))
-              .click(allNumber.get(13))
-              .click(allNumber.get(17))
-              .pause(Duration.ofSeconds(3)) //sau khi click -> pause 3s -> click
-              .perform();
+                .click(allNumber.get(3))
+                .click(allNumber.get(7))
+                .click(allNumber.get(10))
+                .click(allNumber.get(13))
+                .click(allNumber.get(17))
+                .pause(Duration.ofSeconds(3)) //sau khi click -> pause 3s -> click
+                .perform();
         //Nhả phím Ctrl ra
         action.keyUp(keys).perform();
 
         List<WebElement> allNumberSelected = driver.findElements(By.cssSelector("ol#selectable>li.ui-selected"));
         sleepInSeconds(2);
-        Assert.assertEquals(allNumberSelected.size(),6);
+        Assert.assertEquals(allNumberSelected.size(), 6);
     }
 
     @Test
     public void TC_03_DoubleClick() {
         driver.get("https://automationfc.github.io/basic-form/index.html");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView()",driver.findElement((By.xpath("//button[text()='Double click me']"))));
+//action.scrollByAmount(0, 2324+1236).perform();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", driver.findElement((By.xpath("//button[text()='Double click me']"))));
         action.doubleClick(driver.findElement(By.xpath("//button[text()='Double click me']"))).perform();
+
+
         Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
     }
+    @Test
+    public void TC_04_Right_Click() throws InterruptedException {
+        driver.get("http://swisnl.github.io/jQuery-contextMenu/demo.html");
+        Thread.sleep(2000);
+        action.contextClick(driver.findElement(By.xpath("//span[text()='right click me']"))).perform();
+        By quitContextBy = By.cssSelector("li.context-menu-icon-quit");
+        Assert.assertTrue(driver.findElement(quitContextBy).isDisplayed());
 
+        //Hover vào Quit
+        action.moveToElement(driver.findElement(quitContextBy)).perform();
+        Thread.sleep(2000);
+
+        Assert.assertTrue(driver.findElement(By.cssSelector("li.context-menu-icon-quit.context-menu-hover.context-menu-visible")).isDisplayed());
+
+        //Click Quit
+        action.click(driver.findElement(quitContextBy)).perform();
+        Thread.sleep(2000);
+        driver.switchTo().alert().accept();
+        Thread.sleep(2000);
+        Assert.assertFalse(driver.findElement(quitContextBy).isDisplayed());
+    }
     @AfterClass
     public void afterClass() {
         driver.quit();
     }
+
     public void sleepInSeconds(long timeInSecond) {
         try {
             Thread.sleep(timeInSecond * 1000);
@@ -97,4 +121,8 @@ public class Topic_18_Action_II {
             throw new RuntimeException(e);
         }
     }
+
+
 }
+
+
