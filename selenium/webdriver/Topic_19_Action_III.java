@@ -2,8 +2,10 @@ package webdriver;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
@@ -13,6 +15,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.time.Duration;
@@ -26,7 +30,7 @@ public class Topic_19_Action_III {
 
     @BeforeClass
     public void beforeClass() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.manage().window().maximize();
         //Khởi tạo: Tạo một đối tượng thực tế để tham chiếu hoạt động.
@@ -75,6 +79,29 @@ public class Topic_19_Action_III {
         Assert.assertEquals(driver.findElement(By.cssSelector("div#column-b>header")).getText(),"B");
     }
 
+    @Test
+    public void TC_03_Drag_Drop_HTML5_Java_Robot() throws AWTException, InterruptedException {
+        driver.get("https://automationfc.github.io/drag-drop-html5/");
+        dragAndDropHTML5ByXpath("div#column-a","div#column-b");
+        Thread.sleep(3000);
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#column-a>header")).getText(),"B");
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#column-b>header")).getText(),"A");
+
+        dragAndDropHTML5ByXpath("div#column-b","div#column-a");
+        Thread.sleep(3000);
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#column-a>header")).getText(),"A");
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#column-b>header")).getText(),"B");
+    }
+
+    @Test
+    public void TC_04_Scroll_To_Element() throws InterruptedException {
+        driver.get("http://live.techpanda.org/index.php/about-magento-demo-store/");
+        Thread.sleep(3000);
+
+        action.scrollToElement(driver.findElement((By.cssSelector("input#newsletter")))).perform();
+    }
+
+
     public String getContentFile(String filePath) throws IOException {
         Charset cs = Charset.forName("UTF-8");
         FileInputStream stream = new FileInputStream(filePath);
@@ -91,6 +118,51 @@ public class Topic_19_Action_III {
             stream.close();
         }
     }
+
+    public void dragAndDropHTML5ByXpath(String sourceLocator, String targetLocator) throws AWTException {
+
+        WebElement source = driver.findElement(By.cssSelector(sourceLocator));
+        WebElement target = driver.findElement(By.cssSelector(targetLocator));
+
+        // Setup robot
+        Robot robot = new Robot();
+        robot.setAutoDelay(500);
+
+        // Get size of elements
+        org.openqa.selenium.Dimension sourceSize = source.getSize();
+        org.openqa.selenium.Dimension targetSize = target.getSize();
+
+        // Get center distance
+        int xCentreSource = sourceSize.width / 2;
+        int yCentreSource = sourceSize.height / 2;
+        int xCentreTarget = targetSize.width / 2;
+        int yCentreTarget = targetSize.height / 2;
+
+        org.openqa.selenium.Point sourceLocation = source.getLocation();
+        Point targetLocation = target.getLocation();
+
+        // Make Mouse coordinate center of element
+        sourceLocation.x += 20 + xCentreSource;
+        sourceLocation.y += 110 + yCentreSource;
+        targetLocation.x += 20 + xCentreTarget;
+        targetLocation.y += 110 + yCentreTarget;
+
+        // Move mouse to drag from location
+        robot.mouseMove(sourceLocation.x, sourceLocation.y);
+
+        // Click and drag
+        robot.mousePress(InputEvent.BUTTON1_MASK);
+        robot.mousePress(InputEvent.BUTTON1_MASK);
+        robot.mouseMove(((sourceLocation.x - targetLocation.x) / 2) + targetLocation.x, ((sourceLocation.y - targetLocation.y) / 2) + targetLocation.y);
+
+        // Move to final position
+        robot.mouseMove(targetLocation.x, targetLocation.y);
+
+        // Drop
+        robot.mouseRelease(InputEvent.BUTTON1_MASK);
+    }
+
+
 
     @AfterClass
     public void afterClass() {
