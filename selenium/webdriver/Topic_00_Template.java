@@ -14,7 +14,7 @@ public class Topic_00_Template {
     WebDriver driver;
 
     @BeforeClass
-    public void beforeClass() {
+    public void initialBrowser() {
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.manage().window().maximize();
@@ -26,7 +26,7 @@ public class Topic_00_Template {
     }
 
     @AfterClass
-    public void afterClass() {
+    public void cleanBrowser() {
         driver.quit();
     }
 }

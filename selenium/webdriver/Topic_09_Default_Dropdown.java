@@ -45,6 +45,7 @@ public class Topic_09_Default_Dropdown {
         Select dayDropdown = new Select(driver.findElement(By.name("DateOfBirthDay")));
         //Chọn ngày
         dayDropdown.selectByVisibleText(day);
+        sleepInSeconds(2);
 
         //Verify dropdown này là Single (ko phải Multiple)
         Assert.assertFalse(dayDropdown.isMultiple());
@@ -60,6 +61,7 @@ public class Topic_09_Default_Dropdown {
         //MONTH
         Select month  = new Select(driver.findElement(By.name("DateOfBirthMonth")));
         month.selectByVisibleText("November");
+        sleepInSeconds(2);
         //Verify số lượng items trong dropdown này là 13 items
         List<WebElement> monthOptions = month.getOptions();
         Assert.assertEquals(monthOptions.size(), 13);
