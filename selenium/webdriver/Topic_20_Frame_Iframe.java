@@ -54,13 +54,26 @@ public class Topic_20_Frame_Iframe {
     @Test
     public void TC_02_Iframe_ToiDiCodeDao(){
         driver.get("https://toidicodedao.com/");
-        //JavascriptExecutor executor = (JavascriptExecutor)driver;
-        //executor.executeScript("arguments[0].click();", driver.findElement(By.cssSelector("div.fb-page.fb_iframe_widget")));
         driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@data-testid='fb:page Facebook Social Plugin']")));
         WebElement followerText = driver.findElement(By.xpath("//a[text()='Tôi đi code dạo']//parent::div//following-sibling::div"));
         Assert.assertEquals(followerText.getText(),"405,276 followers");
     }
 
+    @Test
+    public void TC_03_Frame() throws InterruptedException {
+        driver.get("https://netbanking.hdfcbank.com/netbanking/");
+        driver.switchTo().frame("login_page");
+        driver.findElement(By.cssSelector("input[name='fldLoginUserId']")).sendKeys("automationfc");
+        Thread.sleep(3000);
+        driver.findElement(By.cssSelector("a.login-btn")).click();
+        Thread.sleep(3000);
+        driver.switchTo().defaultContent();
+        driver.findElement(By.cssSelector("input#keyboard")).sendKeys("123456789");
+        driver.findElement(By.cssSelector("a#loginBtn")).click();
+        Thread.sleep(3000);
+        Assert.assertEquals(driver.findElement(By.cssSelector("p.error-msg")).getText(),"Customer ID/IPIN (Password) is invalid. Please try again.");
+
+    }
 
     @AfterClass
     public void cleanBrowser() {
