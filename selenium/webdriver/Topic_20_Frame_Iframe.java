@@ -1,6 +1,7 @@
 package webdriver;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -49,6 +50,17 @@ public class Topic_20_Frame_Iframe {
         driver.findElement(By.cssSelector("button#login")).click();
         Assert.assertEquals(driver.findElement(By.cssSelector("div#message-error")).getText(),"Username and password are both required.");
     }
+
+    @Test
+    public void TC_02_Iframe_ToiDiCodeDao(){
+        driver.get("https://toidicodedao.com/");
+        //JavascriptExecutor executor = (JavascriptExecutor)driver;
+        //executor.executeScript("arguments[0].click();", driver.findElement(By.cssSelector("div.fb-page.fb_iframe_widget")));
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@data-testid='fb:page Facebook Social Plugin']")));
+        WebElement followerText = driver.findElement(By.xpath("//a[text()='Tôi đi code dạo']//parent::div//following-sibling::div"));
+        Assert.assertEquals(followerText.getText(),"405,276 followers");
+    }
+
 
     @AfterClass
     public void cleanBrowser() {
