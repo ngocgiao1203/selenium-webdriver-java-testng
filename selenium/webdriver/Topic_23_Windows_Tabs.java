@@ -3,6 +3,7 @@ package webdriver;
 import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -96,8 +97,10 @@ public class Topic_23_Windows_Tabs {
 
         driver.findElement(By.cssSelector("button[title='Close Window']")).click();
         Thread.sleep(2000);
+
         switchToWindowByTitle("Mobile");
         Thread.sleep(2000);
+
         Assert.assertEquals(driver.getCurrentUrl(),"https://live.techpanda.org/index.php/mobile.html");
 
         driver.findElement(By.xpath("//a[text()='Clear All']")).click();
@@ -109,6 +112,74 @@ public class Topic_23_Windows_Tabs {
         Assert.assertEquals(driver.findElement(By.cssSelector("li.success-msg span")).getText(),"The comparison list was cleared.");
         Thread.sleep(2000);
 
+
+    }
+    @Test
+    public void TC_03_Cambridge() throws InterruptedException {
+        driver.get("https://dictionary.cambridge.org/vi/");
+        driver.findElement(By.cssSelector("span.cdo-login-button")).click();
+        switchToWindowByTitle("Login");
+        Thread.sleep(3000);
+        driver.findElement(By.cssSelector("input[value='Log in']")).click();
+        Thread.sleep(3000);
+        Assert.assertEquals(driver.findElement(By.cssSelector("input[name='username']~span.gigya-error-msg-active")).getText(),"This field is required");
+        Assert.assertEquals(driver.findElement(By.cssSelector("input[name='password']~span.gigya-error-msg-active")).getText(),"This field is required");
+        driver.close();
+        Thread.sleep(3000);
+        switchToWindowByTitle("Cambridge Dictionary | Từ điển tiếng Anh, Bản dịch & Từ điển từ đồng nghĩa");
+        driver.findElement(By.cssSelector("input#searchword")).sendKeys("code");
+        Thread.sleep(2000);
+        driver.findElement(By.cssSelector("button.cdo-search-button")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#cald4-1~div.pos-header span.headword>span")).getText(),"code");
+    }
+
+    @Test
+    public void TC_04_Selenium_4x() throws InterruptedException {
+        driver.get("https://live.techpanda.org/");
+        driver.findElement(By.xpath("//a[text()='Mobile']")).click();
+        Thread.sleep(2000);
+        System.out.println("Driver ID = " + driver.toString());
+        System.out.println("Window ID = " + driver.getWindowHandle());
+        System.out.println(driver.getTitle());
+        System.out.println(driver.getCurrentUrl());
+
+        driver.switchTo().newWindow(WindowType.TAB).get("http://live.techpanda.org/index.php/customer/account/");
+        Thread.sleep(2000);
+
+        System.out.println("Driver ID = " + driver.toString());
+        System.out.println("Window ID = " + driver.getWindowHandle());
+        System.out.println(driver.getTitle());
+        System.out.println(driver.getCurrentUrl());
+
+        driver.findElement(By.cssSelector("button#send2")).click();
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#advice-required-entry-email")).getText(),"This is a required field.");
+        Assert.assertEquals(driver.findElement(By.cssSelector("div#advice-required-entry-pass")).getText(),"This is a required field.");
+
+        switchToWindowByTitle("Mobile");
+        Thread.sleep(2000);
+
+        //Click button 'Add to Compare' of Sony Xperia
+        driver.findElement(By.xpath("//a[text()='Sony Xperia']/parent::h2" +
+                "/following-sibling::div[@class='actions']//a[text()='Add to Compare']")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("li.success-msg")).getText(),
+                "The product Sony Xperia has been added to comparison list.");
+        Thread.sleep(2000);
+        //Click button 'Add to Compare' of Samsung Galaxy
+        driver.findElement(By.xpath("//a[text()='Samsung Galaxy']/parent::h2" +
+                "/following-sibling::div[@class='actions']//a[text()='Add to Compare']")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("li.success-msg")).getText(),
+                "The product Samsung Galaxy has been added to comparison list.");
+        Thread.sleep(2000);
+        //click Compare button
+        driver.findElement(By.xpath("//span[text()='Compare']")).click();
+        Thread.sleep(2000);
+
+        switchToWindowByTitle("Products Comparison List - Magento Commerce");
+        Thread.sleep(2000);
+
+        Assert.assertEquals(driver.getCurrentUrl(),"https://live.techpanda.org/index.php/catalog/product_compare/index/");
+        Thread.sleep(2000);
 
     }
 
