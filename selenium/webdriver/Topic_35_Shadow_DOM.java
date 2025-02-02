@@ -51,7 +51,46 @@ public class Topic_35_Shadow_DOM {
     }
 
 
-    @AfterClass
+    @Test
+    public void TC_02_() throws InterruptedException {
+        driver.get("https://books-pwakit.appspot.com/");
+
+        Thread.sleep(5000);
+        WebElement firstShadowHostElement = driver.findElement(By.xpath("//book-app"));
+        SearchContext firstShadowHost = firstShadowHostElement.getShadowRoot();
+
+        WebElement secondShadowHostElement = firstShadowHost.findElement(By.cssSelector("book-input-decorator"));
+        SearchContext secondShadowHost = secondShadowHostElement.getShadowRoot();
+        Thread.sleep(2000);
+        firstShadowHost.findElement(By.cssSelector("input#input")).sendKeys("Harry Potter and the Sorcerer's Stone");
+        secondShadowHost.findElement(By.cssSelector("div.icon")).click();
+        Thread.sleep(2000);
+
+        WebElement thirdShadowHostElement = firstShadowHost.findElement(By.cssSelector("book-explore"));
+        SearchContext thirdShadowHost = thirdShadowHostElement.getShadowRoot();
+        Thread.sleep(2000);
+        WebElement forthShadowHostElement = thirdShadowHost.findElement(By.cssSelector("ul>li:nth-of-type(1)>book-item"));
+        SearchContext forthShadowHost = forthShadowHostElement.getShadowRoot();
+        Thread.sleep(2000);
+        Assert.assertEquals(forthShadowHost.findElement(By.cssSelector("h2.title")).getText(),"Harry Potter and the Sorcerer's Stone");
+    }
+
+    @Test
+    public void TC_03_Shopee() throws InterruptedException {
+        driver.get("https://shopee.vn/");
+        Thread.sleep(5000);
+        WebElement firstShadowHostElement = driver.findElement(By.xpath("//div.home-page"));
+        SearchContext firstShadowHost = firstShadowHostElement.getShadowRoot();
+        Thread.sleep(2000);
+        WebElement secondShadowHostElement = firstShadowHost.findElement(By.cssSelector("div.home-popup__content"));
+        SearchContext secondShadowHost = secondShadowHostElement.getShadowRoot();
+        Thread.sleep(2000);
+        firstShadowHost.findElement(By.cssSelector("div.home-popup__close-area")).click();
+        driver.findElement(By.cssSelector("input.shopee-searchbar-input__input")).sendKeys("iPhone 16 Pro Max");
+
+
+    }
+        @AfterClass
     public void afterClass() {
         driver.quit();
     }
