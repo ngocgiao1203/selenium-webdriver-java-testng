@@ -1,9 +1,6 @@
 package webdriver;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -54,7 +51,7 @@ public class Topic_24_JavascriptExecutor {
         Thread.sleep(2000);
         jsExecutor.executeScript("arguments[0].click();",
                 driver.findElement(By.xpath("//a[@title='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']/button")));
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
         String samsungText = (String) jsExecutor.executeScript("return document.documentElement.innerText;");
         Assert.assertTrue(samsungText.contains("Samsung Galaxy was added to your shopping cart."));
@@ -65,16 +62,31 @@ public class Topic_24_JavascriptExecutor {
 
         jsExecutor.executeScript("arguments[0].scrollIntoView(true)",driver.findElement(By.cssSelector("input#newsletter")));
         Thread.sleep(2000);
-        jsExecutor.executeScript("arguments[0].setAttribute('value', arguments[1])",
-                driver.findElement(By.cssSelector("input#newsletter")),
-                email);
+        //Cach 1:
+        jsExecutor.executeScript("arguments[0].setAttribute('value', '" + email + "')",driver.findElement(By.cssSelector("input#newsletter")));
+        //Cach 2: jsExecutor.executeScript("arguments[0].setAttribute('value', arguments[1])",driver.findElement(By.cssSelector("input#newsletter")),email);
+        Thread.sleep(1000);
         jsExecutor.executeScript("arguments[0].click();",driver.findElement(By.cssSelector("button[title='Subscribe']")));
+        Thread.sleep(3000);
+
+        Alert alert = explicitWait.until(ExpectedConditions.alertIsPresent());
+        //Assert.assertEquals(alert.getText(), "I am a JS prompt");
+        alert.accept();
+        Thread.sleep(3000);
+        String subscription = (String) jsExecutor.executeScript("return document.documentElement.innerText;");
+        Assert.assertTrue(subscription.contains("Thank you for your subscription."));
+
+        Thread.sleep(2000);
+        jsExecutor.executeScript("window.location = 'https://www.facebook.com/'");
+        Thread.sleep(2000);
+        String fbDomain = (String) jsExecutor.executeScript("return document.domain;");
+        Assert.assertEquals(fbDomain, "www.facebook.com");
 
     }
 
 
     @AfterClass
     public void afterClass() {
-        //driver.quit();
+        driver.quit();
     }
 }
