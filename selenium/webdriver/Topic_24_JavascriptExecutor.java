@@ -70,7 +70,6 @@ public class Topic_24_JavascriptExecutor {
         Thread.sleep(3000);
 
         Alert alert = explicitWait.until(ExpectedConditions.alertIsPresent());
-        //Assert.assertEquals(alert.getText(), "I am a JS prompt");
         alert.accept();
         Thread.sleep(3000);
         String subscription = (String) jsExecutor.executeScript("return document.documentElement.innerText;");
@@ -85,7 +84,7 @@ public class Topic_24_JavascriptExecutor {
     }
 
     @Test
-    public void TC_02_TechPanda() {
+    public void TC_02_TechPanda() throws InterruptedException {
         navigateToUrlByJS("https://live.techpanda.org/");
 
         Assert.assertEquals(getDomain(), "live.techpanda.org");
@@ -93,6 +92,16 @@ public class Topic_24_JavascriptExecutor {
         clickToElementByJS("//a[text()='Mobile']");
         clickToElementByJS("//a[@title='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']/button");
         Assert.assertTrue(getInnerText().contains("Samsung Galaxy was added to your shopping cart."));
+        clickToElementByJS("//a[text()='Customer Service']");
+        scrollToElementOnTop("//input[@id='newsletter']");
+        setAttributeInDOM("//input[@id='newsletter']","value",email);
+        clickToElementByJS("//button[@title='Subscribe']");
+        Alert alert = explicitWait.until(ExpectedConditions.alertIsPresent());
+        alert.accept();
+        Thread.sleep(2000);
+        Assert.assertTrue(getInnerText().contains("Thank you for your subscription."));
+        navigateToUrlByJS("https://www.facebook.com/");
+        Assert.assertEquals(getDomain(),"www.facebook.com");
 
     }
     @AfterClass
