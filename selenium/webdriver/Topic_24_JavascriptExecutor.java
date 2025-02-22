@@ -115,7 +115,13 @@ public class Topic_24_JavascriptExecutor {
         loginButton.click();
 
         String emptyEmailMessage = getElementValidationMessage("//input[@id='email']");
-        Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
+        if (driver.toString().contains("Chrome")) {
+            Assert.assertEquals(emptyEmailMessage, "Please fill out this field.");
+        } else {
+            Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
+        }
+
+        //Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
         Thread.sleep(3000);
 
         //Email invalid
