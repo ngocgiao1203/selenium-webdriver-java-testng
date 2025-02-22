@@ -127,8 +127,8 @@ public class Topic_24_JavascriptExecutor {
         if (driver.toString().contains("Chrome")) {
             Assert.assertEquals(emptyEmailMessage, "Please fill out this field.");
         } else {
-            //Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
-            Assert.assertEquals(emptyEmailMessage, "Please fill out this field.");
+            Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
+            //Assert.assertEquals(emptyEmailMessage, "Please fill out this field.");
         }
 
         //Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
@@ -184,7 +184,7 @@ public class Topic_24_JavascriptExecutor {
         if (driver.toString().contains("Chrome")) {
             Assert.assertEquals(emptyPasswordMessage, "Please fill out this field.");
         } else {
-            Assert.assertEquals(emptyPasswordMessage, "Please fill out this field.");
+            Assert.assertEquals(emptyPasswordMessage, "Vui lòng điền vào trường này.");
         }
     }
 
