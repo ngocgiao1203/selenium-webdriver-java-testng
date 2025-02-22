@@ -1,6 +1,7 @@
 package webdriver;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -24,7 +25,7 @@ public class Topic_24_JavascriptExecutor {
 
     @BeforeClass
     public void beforeClass() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
 
         //2. Khởi tạo ép kiểu
         jsExecutor = (JavascriptExecutor) driver; // Ép kiểu driver thành JavascriptExecutor vì các trình duyệt như ChromeDriver đã triển khai interface này.
@@ -60,13 +61,13 @@ public class Topic_24_JavascriptExecutor {
         jsExecutor.executeScript("arguments[0].click();",
                 driver.findElement(By.xpath("//a[text()='Customer Service']")));
 
-        jsExecutor.executeScript("arguments[0].scrollIntoView(true)",driver.findElement(By.cssSelector("input#newsletter")));
+        jsExecutor.executeScript("arguments[0].scrollIntoView(true)", driver.findElement(By.cssSelector("input#newsletter")));
         Thread.sleep(2000);
         //Cach 1:
-        jsExecutor.executeScript("arguments[0].setAttribute('value', '" + email + "')",driver.findElement(By.cssSelector("input#newsletter")));
+        jsExecutor.executeScript("arguments[0].setAttribute('value', '" + email + "')", driver.findElement(By.cssSelector("input#newsletter")));
         //Cach 2: jsExecutor.executeScript("arguments[0].setAttribute('value', arguments[1])",driver.findElement(By.cssSelector("input#newsletter")),email);
         Thread.sleep(1000);
-        jsExecutor.executeScript("arguments[0].click();",driver.findElement(By.cssSelector("button[title='Subscribe']")));
+        jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.cssSelector("button[title='Subscribe']")));
         Thread.sleep(3000);
 
         Alert alert = explicitWait.until(ExpectedConditions.alertIsPresent());
@@ -94,31 +95,101 @@ public class Topic_24_JavascriptExecutor {
         Assert.assertTrue(getInnerText().contains("Samsung Galaxy was added to your shopping cart."));
         clickToElementByJS("//a[text()='Customer Service']");
         scrollToElementOnTop("//input[@id='newsletter']");
-        setAttributeInDOM("//input[@id='newsletter']","value",email);
+        setAttributeInDOM("//input[@id='newsletter']", "value", email);
         clickToElementByJS("//button[@title='Subscribe']");
         Alert alert = explicitWait.until(ExpectedConditions.alertIsPresent());
         alert.accept();
         Thread.sleep(2000);
         Assert.assertTrue(getInnerText().contains("Thank you for your subscription."));
         navigateToUrlByJS("https://www.facebook.com/");
-        Assert.assertEquals(getDomain(),"www.facebook.com");
+        Assert.assertEquals(getDomain(), "www.facebook.com");
 
     }
+
+    @Test
+    public void TC_03_Rode() throws InterruptedException {
+        driver.get("https://warranty.rode.com/");
+        WebElement loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
+
+        //empty
+        loginButton.click();
+
+        String emptyEmailMessage = getElementValidationMessage("//input[@id='email']");
+        Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
+        Thread.sleep(3000);
+
+        //Email invalid
+        String invalidEmailData = "aaa";
+        driver.findElement(By.xpath("//input[@id='email']")).sendKeys(invalidEmailData);
+        loginButton.click();
+        Thread.sleep(2000);
+
+        String invalidEmailMessage = getElementValidationMessage("//input[@id='email']");
+
+        if (driver.toString().contains("Chrome")) {
+            Assert.assertEquals(invalidEmailMessage, "Please include an '@' in the email address. '" + invalidEmailData + "' is missing an '@'.");
+        } else {
+            Assert.assertEquals(invalidEmailMessage, "Vui lòng điền một địa chỉ email.");
+        }
+
+        invalidEmailData = "aaa@";
+        driver.findElement(By.xpath("//input[@id='email']")).clear();
+        driver.findElement(By.xpath("//input[@id='email']")).sendKeys(invalidEmailData);
+        loginButton.click();
+        Thread.sleep(2000);
+        invalidEmailMessage = getElementValidationMessage("//input[@id='email']");
+
+        if (driver.toString().contains("Chrome")) {
+            Assert.assertEquals(invalidEmailMessage, "Please enter a part following '@'. '" + invalidEmailData + "' is incomplete.");
+        } else {
+            Assert.assertEquals(invalidEmailMessage, "Vui lòng điền một địa chỉ email.");
+        }
+
+        invalidEmailData = "aaa@aaa.";
+        driver.findElement(By.xpath("//input[@id='email']")).clear();
+        driver.findElement(By.xpath("//input[@id='email']")).sendKeys(invalidEmailData);
+        loginButton.click();
+        Thread.sleep(2000);
+        invalidEmailMessage = getElementValidationMessage("//input[@id='email']");
+
+        if (driver.toString().contains("Chrome")) {
+            Assert.assertEquals(invalidEmailMessage, "'.' is used at a wrong position in '"+invalidEmailData.split("@")[1]+"'.");
+        } else {
+            Assert.assertEquals(invalidEmailMessage, "Vui lòng điền một địa chỉ email.");
+        }
+
+        //Email valid
+        driver.findElement(By.xpath("//input[@id='email']")).clear();
+        driver.findElement(By.xpath("//input[@id='email']")).sendKeys(email);
+        loginButton.click();
+        Thread.sleep(2000);
+
+        String emptyPasswordMessage = getElementValidationMessage("//input[@id='password']");
+        if (driver.toString().contains("Chrome")) {
+            Assert.assertEquals(emptyPasswordMessage, "Please fill out this field.");
+        } else {
+            Assert.assertEquals(emptyPasswordMessage, "Vui lòng điền vào trường này.");
+        }
+    }
+
     @AfterClass
     public void afterClass() {
         driver.quit();
     }
+
     public WebElement getElement(String locator) {
         return driver.findElement(By.xpath(locator));
     }
+
     public Object executeForBrowser(String javaScript) {
         return jsExecutor.executeScript(javaScript);
     }
 
-    public String getPageURL(){
+    public String getPageURL() {
         return (String) jsExecutor.executeScript("return document.URL;");
     }
-    public String getDomain(){
+
+    public String getDomain() {
         return (String) jsExecutor.executeScript("return document.domain;");
     }
 
@@ -170,7 +241,7 @@ public class Topic_24_JavascriptExecutor {
     }
 
     public void setAttributeInDOM(String locator, String attributeName, String attributeValue) {
-        jsExecutor.executeScript("arguments[0].setAttribute('" + attributeName + "', '" + attributeValue +"');", getElement(locator));
+        jsExecutor.executeScript("arguments[0].setAttribute('" + attributeName + "', '" + attributeValue + "');", getElement(locator));
     }
 
     public void removeAttributeInDOM(String locator, String attributeRemove) {
