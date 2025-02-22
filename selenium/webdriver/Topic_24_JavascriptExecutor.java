@@ -3,6 +3,8 @@ package webdriver;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -25,7 +27,14 @@ public class Topic_24_JavascriptExecutor {
 
     @BeforeClass
     public void beforeClass() {
-        driver = new ChromeDriver();
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setPreference("intl.locale.matchOS",false);
+        profile.setPreference("intl.accept_languages", "en-US");
+        profile.setPreference("intl.locale.requested","en-US");
+        profile.setPreference("general.useragent.locale","en-US");
+        FirefoxOptions options = new FirefoxOptions();
+        options.setProfile(profile);
+        driver = new FirefoxDriver(options);
 
         //2. Khởi tạo ép kiểu
         jsExecutor = (JavascriptExecutor) driver; // Ép kiểu driver thành JavascriptExecutor vì các trình duyệt như ChromeDriver đã triển khai interface này.
@@ -118,7 +127,8 @@ public class Topic_24_JavascriptExecutor {
         if (driver.toString().contains("Chrome")) {
             Assert.assertEquals(emptyEmailMessage, "Please fill out this field.");
         } else {
-            Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
+            //Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
+            Assert.assertEquals(emptyEmailMessage, "Please fill out this field.");
         }
 
         //Assert.assertEquals(emptyEmailMessage, "Vui lòng điền vào trường này.");
@@ -174,7 +184,7 @@ public class Topic_24_JavascriptExecutor {
         if (driver.toString().contains("Chrome")) {
             Assert.assertEquals(emptyPasswordMessage, "Please fill out this field.");
         } else {
-            Assert.assertEquals(emptyPasswordMessage, "Vui lòng điền vào trường này.");
+            Assert.assertEquals(emptyPasswordMessage, "Please fill out this field.");
         }
     }
 
