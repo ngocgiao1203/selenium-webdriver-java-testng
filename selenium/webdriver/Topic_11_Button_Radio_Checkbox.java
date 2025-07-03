@@ -26,7 +26,6 @@ public class Topic_11_Button_Radio_Checkbox {
 
     @Test
     public void TC_01_Egov_button() {
-        //driver.get("https://www.fahasa.com/customer/account/create");
         driver.get("https://egov.danang.gov.vn/reg");
         WebElement registerButton = driver.findElement(By.cssSelector("input#button2"));
         //Verify button bị disable khi chưa click vào checkbox
